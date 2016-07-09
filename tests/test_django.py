@@ -859,5 +859,12 @@ class AutoDjangoFactoryTestCase(unittest.TestCase):
         self.assertEqual('', obj.opt)
 
 
+@unittest.skipIf(django is None, "Django not installed.")
+class AcceptedAttributesTestCase(unittest.TestCase):
+
+    def test_simple_factory(self):
+        self.assertEqual(set(['id', 'foo', 'standardson']), StandardFactory.accepted_attributes())
+
+
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

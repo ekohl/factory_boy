@@ -580,6 +580,16 @@ class BaseFactory(object):
         return decls
 
     @classmethod
+    def accepted_attributes(cls):
+        result = set(cls.declarations().keys())
+        introspector = cls._meta.introspector
+        try:
+            result |= set(introspector.get_field_names(introspector._model))
+        except NotImplementedError:
+            pass
+        return result
+
+    @classmethod
     def _rename_fields(cls, **kwargs):
         for old_name, new_name in cls._meta.rename.items():
             kwargs[new_name] = kwargs.pop(old_name)

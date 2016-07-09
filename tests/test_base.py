@@ -533,6 +533,17 @@ class PostGenerationParsingTestCase(unittest.TestCase):
         self.assertIn('foo__bar', TestObjectFactory._meta.declarations)
 
 
+class AcceptedAttributesTestCase(unittest.TestCase):
+
+    def test_simple_factory(self):
+        class TestObjectFactory(base.Factory):
+            class Meta:
+                model = TestObject
+
+            one = declarations.LazyAttribute(lambda _o: 1)
+
+        self.assertEqual(set(['one']), TestObjectFactory.accepted_attributes())
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

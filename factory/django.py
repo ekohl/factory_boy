@@ -187,12 +187,15 @@ class DjangoIntrospector(base.BaseIntrospector):
         else:
             return model._meta.get_fields()
 
-    def get_field_names(self, model):
-        return [
-            field.name
-            for field in self._compat_get_fields(model)
-            if self._is_concrete_field(field) and not field.blank
-        ]
+    def get_field_names(self, model, include_all=True):
+        if include_all:
+            return [field.name for field in self._compat_get_fields(model)]
+        else:
+            return [
+                field.name
+                for field in self._compat_get_fields(model)
+                if self._is_concrete_field(field) and not field.blank
+            ]
 
     def get_field_by_name(self, model, field_name):
         if django.VERSION[:2] < (1, 8):
